@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }} {{ Auth::user()->roles }}
+            {{ __('Vehicle') }}
         </h2>
     </x-slot>
 
@@ -33,14 +33,14 @@
 
             {{-- success session --}}
             @if (Session::has('success'))    
-                <div id="toast-success" class="flex items-center fixed bottom-5 right-8 z-50 w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                <div id="toast-success" class="flex items-center fixed bottom-5 right-8 w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
                     <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                         </svg>
                         <span class="sr-only">Check icon</span>
                     </div>
-                    <div class="ml-3 text-sm font-normal">Vehicle Request successfully.</div>
+                    <div class="ml-3 text-sm font-normal">{{ Session::get('success') }}</div>
                     <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -50,35 +50,19 @@
                 </div>
             @endif
 
-            @if (Auth::user()->roles == 'admin')    
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center justify-between">
-                        {{-- Title --}}
-                        <strong>Live Vehicle Status</strong>
-                        <div class="flex">
-                            <a href="{{ route('export.rent') }}" class="mr-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-                                Export Data
-                            </a>
-                            <button data-modal-toggle="request-car-modal" data-modal-target="request-car-modal" type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-                                Request Car
-                            </button>
-                        </div>
-                    </div>
-                    @include('components.tables.table-car-status')
-
-                    {{-- Modal --}}
-                    @include('components.modals.request-car-modal')
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center justify-between">
+                    {{-- Title --}}
+                    <strong>List Vehicle</strong>
+                    <button data-modal-toggle="add-car-modal" data-modal-target="add-car-modal" type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+                        Add new vehicle
+                    </button>
                 </div>
-            @else
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center justify-between">
-                        {{-- Title --}}
-                        <strong>Vehicle Request</strong>
-                    </div>
-                    @include('components.tables.table-car-review')
-                </div>
-            @endif
+                {{-- modal --}}
+                @include('components.modals.add-car-modal')
+                
+                @include('components.tables.table-car')
+            </div>
         </div>
-
     </div>
 </x-app-layout>
